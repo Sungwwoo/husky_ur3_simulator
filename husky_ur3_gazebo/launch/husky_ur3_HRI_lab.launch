@@ -4,9 +4,11 @@
 
   <arg name="laser_enabled" default="true"/>
   <arg name="camera_h_enabled" default="true"/>
+  <arg name="use_effort" default="false"/>
+  <arg name="paused" default="false"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find husky_ur3_gazebo)/worlds/HRI_lab.world"/>
-    <arg name="paused" value="false"/>
+    <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
@@ -17,6 +19,7 @@
   <include file="$(find husky_ur3_gazebo)/launch/spawn_husky.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="camera_h_enabled" value="$(arg camera_h_enabled)"/>
+    <arg name="use_effort" value="$(arg use_effort)"/>
   </include>
 
 </launch>

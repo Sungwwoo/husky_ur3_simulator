@@ -31,13 +31,13 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
-  <arg name="z" default="0.0"/>
+  <arg name="z" default="0.14"/>
   <arg name="yaw" default="0.0"/>
 
   <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
   <arg name="camera_h_enabled" default="$(optenv HUSKY_UR5_ENABLED false)"/>
   <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
-
+  <arg name="use_effort" default="false"/>
 
   <group ns="$(arg robot_namespace)">
 
@@ -66,6 +66,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <arg name="laser_enabled" value="$(arg laser_enabled)"/>      
 	      <arg name="camera_h_enabled" value="$(arg camera_h_enabled)"/>
         <arg name="urdf_extras" value="$(arg urdf_extras)"/>
+        <arg name="use_effort" value="$(arg use_effort)"/>
       </include>
     </group>
     
@@ -108,7 +109,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
               -y $(arg y)
               -z $(arg z)
               -Y $(arg yaw)
-              -unpause
               -urdf
               -param robot_description
               -model $(arg robot_namespace)" />

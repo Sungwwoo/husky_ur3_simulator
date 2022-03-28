@@ -11,6 +11,7 @@
   <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
   <arg name="camera_h_enabled" default="$(optenv HUSKY_KINECT_ENABLED false)"/>
   <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+  <arg name="use_effort" default="false"/>
 
   <include file="$(find multimaster_launch)/launch/multimaster_robot.launch" if="$(arg multimaster)">
     <arg name="gazebo_interface" value="$(find husky_ur3_gazebo)/config/gazebo_interface.yaml" />
@@ -24,20 +25,34 @@
     <arg name="laser_enabled" default="$(arg laser_enabled)"/>
     <arg name="camera_h_enabled" default="$(arg camera_h_enabled)"/>
     <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+    <arg name="use_effort" default="$(arg use_effort)"/>
   </include>
 
   <!-- Load controller configuration -->
-  <rosparam command="load" file="$(find husky_ur3_gazebo)/config/control.yaml" />
+  <group if="$(arg use_effort)">
+    <rosparam command="load" file="$(find husky_ur3_gazebo)/config/control_effort.yaml" />
+    <!-- 210927 YSW: Added gripper controller spawner -->
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" respawn = "false"
+        args="husky_joint_publisher husky_velocity_controller arm_controller
+                                                rh_p12_rn_position
+                                                rh_r2_position
+                                                rh_l1_position
+                                                rh_l2_position"/>
+  </group>
+  <group unless="$(arg use_effort)">
+    <rosparam command="load" file="$(find husky_ur3_gazebo)/config/control.yaml" />
+  <!-- 210927 YSW: Added gripper controller spawner -->
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" respawn = "false"
+        args="husky_joint_publisher husky_velocity_controller arm_controller
+                                                rh_p12_rn_position
+                                                rh_r2_position
+                                                rh_l1_position
+                                                rh_l2_position"/>
+  </group>
+  
 
   <!-- Spawn controllers -->
 
-  <!-- 210927 YSW: Added gripper controller spawner -->
-  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" respawn = "false"
-      args="husky_joint_publisher husky_velocity_controller arm_controller 
-                                              rh_p12_rn_position
-                                              rh_r2_position
-                                              rh_l1_position
-                                              rh_l2_position"/>
   
   <!-- 210927 YSW: Added gripper gazebo publisher -->                                           
   <node name="gripper_gazebo_pub" pkg="husky_ur3_gazebo" type="gazebo_rh_pub"/>

@@ -52,8 +52,8 @@ move_group = MoveGroupCommander(group_name)
 FIXED_FRAME = 'world'
 
 display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
-                                               DisplayTrajectory,
-                                               queue_size=20)
+                                                DisplayTrajectory,
+                                                queue_size=20)
 
 
 def newOdom(msg):

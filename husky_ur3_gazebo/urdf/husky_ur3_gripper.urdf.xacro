@@ -29,20 +29,40 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:arg name="laser_xyz" default="$(optenv HUSKY_LMS1XX_XYZ 0.3206 0.0 -0.000635)" />
   <xacro:arg name="laser_rpy" default="$(optenv HUSKY_LMS1XX_RPY 0.0 0 0)" />
 
+  
+ 
+  <!-- camera_h: decorations.urdf.xacro -->
+  <!-- camera_g: ur3_robot_gripper.urdf.xacro -->
+
+  <!--
+  <xacro:arg name="camera_h_enabled" default="true" />
+  <xacro:arg name="camera_g_enabled" default="true" />
+  <xacro:arg name="camera_h_xyz" default="$(optenv HUSKY_KINECT_XYZ 0.33 0 0.01)" />
+  <xacro:arg name="camera_h_rpy" default="$(optenv HUSKY_KINECT_RPY 0 -0.314 0)" />
+  <xacro:arg name="camera_g_xyz" default="$(optenv HUSKY_KINECT_XYZ 0 0 0.04)" />
+  <xacro:arg name="camera_g_rpy" default="$(optenv HUSKY_KINECT_RPY 0 0 0)" />
+  -->
+
   <xacro:property name="husky_front_bumper_extend" value="$(optenv HUSKY_FRONT_BUMPER_EXTEND 0)" />
   <xacro:property name="husky_rear_bumper_extend" value="$(optenv HUSKY_REAR_BUMPER_EXTEND 0)" />
 
   <xacro:arg name="robot_namespace" default="/husky" />
   <xacro:arg name="urdf_extras" default="empty.urdf" />
+  <xacro:arg name="transmission_hw_interface" default="false"/>
 
   <!-- Included URDF/XACRO Files -->
   <xacro:include filename="$(find husky_ur3_gazebo)/urdf/decorations.urdf.xacro" />
   <xacro:include filename="$(find husky_ur3_gazebo)/urdf/wheel.urdf.xacro" />
   <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/sensor_arch.urdf.xacro"/>
   <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/sick_tim571.urdf.xacro"/>
-  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/ur3_robot_gripper.urdf.xacro"/>
-  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/d435_camera_h.urdf.xacro"/>-
-  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/d435_camera_g.urdf.xacro"/>-
+  <xacro:if value="$(arg transmission_hw_interface)">
+    <xacro:include filename="$(find husky_ur3_gazebo)/urdf/ur3_robot_gripper_effort.urdf.xacro"/>
+  </xacro:if>
+  <xacro:unless value="$(arg transmission_hw_interface)">
+    <xacro:include filename="$(find husky_ur3_gazebo)/urdf/ur3_robot_gripper.urdf.xacro"/>
+  </xacro:unless>
+  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/d435_camera_h.urdf.xacro"/>
+  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/d435_camera_g.urdf.xacro"/>
   <!--xacro:include filename="$(find husky_ur3_gazebo)/urdf/ur3_robot.urdf.xacro"/-->
 
 
@@ -183,7 +203,20 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
    	<origin xyz="$(arg laser_xyz)" rpy="$(arg laser_rpy)"/>
   </xacro:sensor_sick_tim571>
 
-	
+<!--  <xacro:if value="$(arg camera_h_enabled)">
+
+    <xacro:h_sensor_d435 parent="top_plate_link">
+      <origin xyz="$(arg camera_h_xyz)" rpy="$(arg camera_h_rpy)"/>
+    </xacro:h_sensor_d435>
+  </xacro:if>
+
+  <xacro:if value="$(arg camera_g_enabled)">
+
+    <xacro:g_sensor_d435 parent="ee_link">
+      <origin xyz="$(arg camera_g_xyz)" rpy="$(arg camera_g_rpy)"/>
+    </xacro:g_sensor_d435>
+  </xacro:if>
+-->
 
  <joint name="control_box_ur3_joint" type="fixed">
       <origin xyz="-0.095 0 0.233" rpy="${M_PI/2} 0 0" />
@@ -261,5 +294,24 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
   <!-- Optional custom includes. -->
   <xacro:include filename="$(arg urdf_extras)" />
+  
+  <gazebo>
+    <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+        <arm>
+          <arm_name>ur3_robot</arm_name>
+          <palm_link> wrist_3_link  </palm_link>
+          <gripper_link> rh_p12_rn_r2 </gripper_link>
+          <gripper_link> rh_p12_rn_l2 </gripper_link>
+        </arm>
+        <forces_angle_tolerance>100</forces_angle_tolerance>
+        <update_rate>4</update_rate>
+        <grip_count_threshold>4</grip_count_threshold>
+        <max_grip_count>8</max_grip_count>
+        <release_tolerance>0.005</release_tolerance>
+        <disable_collisions_on_attach>false</disable_collisions_on_attach>
+        <contact_topic>__default_topic__</contact_topic>
+    </plugin>
+  </gazebo>
+
 
 </robot>
