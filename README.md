@@ -3,9 +3,11 @@
 ## Overview
 This is a mobile manipulator simulator package using Gazebo, RViz, MoveIt, move_base.
 
-The model of the mobile manipulator robot was created by combining Universal Robots's UR3 and Clearpath Robotics's Husky.
+The model of the mobile manipulator robot was created by combining Universal Robots's UR series and Clearpath Robotics's Husky.
+UR3, UR5, UR10 can be used in this package.
 
 This package is for ROS Noetic, but it also works normally in ROS Melodic.
+
 
 ### Author:
 - **[SungWoo Yang](https://github.com/Sungwwoo), p1112007@khu.ac.kr**
@@ -107,6 +109,7 @@ $ roslaunch husky_ur3_gripper_moveit_config Omni_control.launch
 - If you want to navigation using map, type the following command.
 $ roslaunch husky_ur3_navigation husky_ur3_in_HRI_lab_amcl.launch
 ```
+- To use UR5, UR10, use ```spawn_husky_ur5.launch``` and ```spawn_husky_ur10.launch``` in ```husky_ur3_gazebo```, and ```Omni_control_ur5.launch``` and ```Omni_control_ur10``` in ```husky_ur3_gripper_moveit_config```.
 
 ## How to use gripper?
 ```
