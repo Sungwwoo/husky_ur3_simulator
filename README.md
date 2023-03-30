@@ -1,4 +1,4 @@
-# husky_ur3_simulator Noetic version
+# husky_ur_simulator Noetic version
 
 ## Overview
 This is a mobile manipulator simulator package using Gazebo, RViz, MoveIt, move_base.
