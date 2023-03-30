@@ -109,8 +109,9 @@ $ roslaunch husky_ur3_gripper_moveit_config Omni_control.launch
 - If you want to navigation using map, type the following command.
 $ roslaunch husky_ur3_navigation husky_ur3_in_HRI_lab_amcl.launch
 ```
-- To use UR5, UR10, use ```spawn_husky_ur5.launch``` and ```spawn_husky_ur10.launch``` in ```husky_ur3_gazebo```, and ```Omni_control_ur5.launch``` and ```Omni_control_ur10``` in ```husky_ur3_gripper_moveit_config```.
-
+- To use UR5, UR10, use ```spawn_husky_ur5.launch``` and ```spawn_husky_ur10.launch``` in ```husky_ur3_gazebo```, and ```Omni_control_ur5.launch``` and ```Omni_control_ur10.launch``` in ```husky_ur3_gripper_moveit_config```.
+- To use ```effort_interface```, set ```use_effort``` to ```true``` in ```spawn_husky.launch```. This option is only available for UR3 model.
+-
 ## How to use gripper?
 ```
 - gripper open
