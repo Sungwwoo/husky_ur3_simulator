@@ -22,8 +22,6 @@
     <arg name="marker_size" value="$(arg user_marker_size)" />
     <arg name="max_new_marker_error" value="0.08" />
     <arg name="max_track_error" value="0.2" />
-    <arg name="h_cam_image_topic" value="/h_d435/rgb/h_image_raw" />
-    <arg name="h_cam_info_topic" value="/h_d435/rgb/camera_info" />
     <arg name="output_frame" value="$(arg marker_frame_id)" />
     
   </include> 
@@ -33,8 +31,6 @@
     <arg name="marker_size" value="$(arg user_marker_size)" />
     <arg name="max_new_marker_error" value="0.08" />
     <arg name="max_track_error" value="0.2" />
-    <arg name="g_cam_image_topic" value="/g_d435/rgb/g_image_raw" />
-    <arg name="g_cam_info_topic" value="/g_d435/rgb/camera_info" />
     <arg name="output_frame" value="$(arg marker_frame_id)" />    
   </include> 
 

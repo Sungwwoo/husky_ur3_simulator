@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro"
+       name="ur5" >
+
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/EffortJointInterface"/>
+
+  <!-- common stuff -->
+  <!--xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" /-->
+
+  <!-- ur3 -->
+  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/ur5.urdf.xacro" />
+  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/rh_p12_rn_gripper.xacro" />
+  <xacro:include filename="$(find husky_ur3_gazebo)/urdf/accessories/d435_camera_g.urdf.xacro" />
+
+
+  <!-- arm -->
+  <xacro:ur5_robot prefix="" joint_limited="true"
+    shoulder_pan_lower_limit="${-pi}" shoulder_pan_upper_limit="${pi}"
+    shoulder_lift_lower_limit="${-pi}" shoulder_lift_upper_limit="${pi}"
+    elbow_joint_lower_limit="${-pi+0.52359}" elbow_joint_upper_limit="${pi}"
+    wrist_1_lower_limit="${-pi}" wrist_1_upper_limit="${pi}"
+    wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
+    wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
+    transmission_hw_interface="hardware_interface/PositionJointInterface"
+  />
+ 
+  <joint name="husky_ur5_joint" type="fixed">
+    <parent link="top_plate_link" />
+    <child link = "ur5_base_link" />
+         <origin xyz="0.25 0 0.01" rpy="0.0 0.0 -1.57" />
+  </joint>
+
+   <joint name="ur5_gripper_joint" type="fixed">
+    <parent link="ee_link" />
+    <child link = "rh_p12_rn_base" />
+          <origin xyz="0 0 0" rpy="0 0.0 1.57"/>
+  </joint>
+ 
+  <xacro:g_sensor_d435 parent="ee_link">
+        <origin xyz="0.0 0.04 0.0" rpy="-1.57 -1.57 0.0"/>
+  </xacro:g_sensor_d435>
+    
+</robot>

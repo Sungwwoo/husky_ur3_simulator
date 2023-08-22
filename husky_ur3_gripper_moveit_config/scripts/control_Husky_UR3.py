@@ -291,20 +291,3 @@ move_group.go(joint_goal, wait=True)
 
 
 move_group.stop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
